@@ -1,0 +1,41 @@
+image:
+  file: .gitpod.Dockerfile
+  
+ports:
+  - port: 8001
+    onOpen: ignore
+  - port: 8000
+    onOpen: ignore
+  - port: 9009
+    onOpen: ignore
+  - port: 3306
+    onOpen: ignore
+
+tasks:
+  - before: bash bash/before-tasks.sh
+    init: |
+      bash bash/init-gitpod.sh &&
+      bash bash/init-optional-scaffolding.sh &&
+      bash bash/init-complete.sh
+    name: Startup
+  - openMode: split-left
+    command: |
+      UP=$(pgrep mysql | wc -l); \
+      if [ "$UP" -ne 1 ]; then \
+        . bash/third-party/spinner.sh &&
+        start_spinner "Initializing MySql..." &&
+        gp await-port 3306 &&
+        stop_spinner $?; \
+      fi &&
+      gp await-port 3306 &&
+      sleep 1 &&
+      bash -i bash/helpers.sh start_server
+    name: Web Server
+  - openMode: split-top
+    command: |
+      default_server=$(bash bash/utils.sh parse_ini_value starter.ini development default_server); open_preview $default_server
+    name: Main Terminal
+
+vscode:
+  extensions:
+    - felixfbecker.php-debug@1.14.5:xEr6zDqY853IE2HQtLtXPA==
