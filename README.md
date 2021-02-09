@@ -12,8 +12,9 @@ You may also deploy the project yourself.
 
 
 ### Powered by
-- Laravel 8
-- laravel/ui ^3.2.0, React ^17.0.1 (without auth)
-- MySql
-
-[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/apolopena/https://github.com/apolopena/q-and-a-challenge)
+- [Laravel 8](https://laravel.com/)
+- [`gitpod-laravel8-starter`](https://github.com/apolopena/gitpod-laravel8-starter) 0.0.2
+- [`laravel/ui`](https://github.com/laravel/ui) ^3.2.0
+- [`react`](https://github.com/facebook/react) and [`react-dom`](https://github.com/facebook/react/tree/master/packages/react-dom) ^17.0.1 
+- [MySql](https://www.mysql.com/)
+- [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/apolopena/https://github.com/apolopena/q-and-a-challenge)
