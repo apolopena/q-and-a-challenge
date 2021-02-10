@@ -32,5 +32,7 @@ class QuestionController extends Controller
     {
         $question = Question::with(['answers'])
             ->find($id);
+
+        return $question->toJson();
     }
 }

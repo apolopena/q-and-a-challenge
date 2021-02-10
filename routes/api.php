@@ -20,6 +20,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('questions', [QuestionController::class, 'all']);
-Route::post('questions', 'QuestionController@new');
-Route::post('questions/{id}', 'QuestionController@show');
+Route::post('questions', [QuestionController::class, 'new']);
+Route::get('questions/{id}', [QuestionController::class, 'show']);
 #Route::post('answers', 'AnswerController@store');
