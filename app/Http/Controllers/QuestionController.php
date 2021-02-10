@@ -25,7 +25,7 @@ class QuestionController extends Controller
             'description' => $validated['description']
         ]);
 
-        return response()->json('Question Created');
+        return response()->json('Question ' . $question->id . ' created');
     }
 
     public function show($id)
