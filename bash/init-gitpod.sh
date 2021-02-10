@@ -41,11 +41,11 @@ if [ ! -d "$GITPOD_REPO_ROOT/bootstrap" ]; then
     stop_spinner $err_code
     log "SUCCESS: moved Laravel project from ~/temp-app to $GITPOD_REPO_ROOT"
   fi
-  
+
   # BEGIN: parse configurations
 
   # Configure .editorconfig
-  if [ -e .editorconfig ]; then 
+  if [ -e .editorconfig ]; then
     ec_type=$(bash bash/utils.sh parse_ini_value starter.ini .editorconfig type)
     case $(echo "$ec_type" | tr '[:upper:]' '[:lower:]') in
       'laravel-js-2space')
@@ -59,8 +59,8 @@ if [ ! -d "$GITPOD_REPO_ROOT/bootstrap" ]; then
       ;;
     esac
   fi
-  
-  # Laravel .env 
+
+  # Laravel .env
   [ -e .env ] && url=$(gp url 8000); sed -i'' "s#^APP_URL=http://localhost*#APP_URL=$url\nASSET_URL=$url#g" .env
   # END: parse configurations
 
@@ -69,7 +69,7 @@ if [ ! -d "$GITPOD_REPO_ROOT/bootstrap" ]; then
   installed_phpmyadmin=$(. bash/utils.sh parse_ini_value starter.ini phpmyadmin install)
   if [ "$installed_phpmyadmin" == 1 ]; then
     msg="Creating phpmyadmin superuser: pmasu"
-    log_silent "$msg" && start_spinner "$msg" 
+    log_silent "$msg" && start_spinner "$msg"
     mysql -e "CREATE USER 'pmasu'@'%' IDENTIFIED BY '123456';"
     mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'pmasu'@'%';"
     err_code=$?
@@ -97,7 +97,7 @@ if [ ! -d "$GITPOD_REPO_ROOT/bootstrap" ]; then
 fi
 
 # Messages for github_changelog_generator
-[ "$installed_changelog_gen" == 1 ] && 
+[ "$installed_changelog_gen" == 1 ] &&
 log "You may auto generate a CHANGELOG.md from github commits by running the command:\nrake changelog [...options]\n" &&
 log "See starter.ini (github_changelog_generator section) for configurable options" &&
 log "For a full list of options see the github-changelog-generator repository on github"

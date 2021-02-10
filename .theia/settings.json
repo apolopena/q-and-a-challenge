@@ -29,5 +29,8 @@
   ],
   "editor.insertSpaces": true,
   "editor.tabSize": 2,
-  "editor.detectIndentation": false
+  "editor.detectIndentation": false,
+  "editor.formatOnSave": true,
+  "intelephense.format.enable": true,
+  "intelephense.environment.phpVersion": "7.4.2"
 }

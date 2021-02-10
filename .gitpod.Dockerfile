@@ -41,5 +41,5 @@ COPY --chown=gitpod:gitpod bash/snippets/server-functions /tmp
 COPY --chown=gitpod:gitpod bash/snippets/browser-functions /tmp
 RUN echo "# BEGIN: custom code (not internal to gitpod)" \
     && cat /tmp/server-functions >> ~/.bashrc \
-    && echo -e "\n" | cat /tmp/browser-functions >> ~/.bashrc \ 
+    && echo -e "\n" | cat /tmp/browser-functions >> ~/.bashrc \
     && echo "# END: custom code (not internal to gitpod)"
