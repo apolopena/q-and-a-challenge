@@ -7,11 +7,30 @@ use Illuminate\Http\Request;
 
 class QuestionController extends Controller
 {
-    public function index()
+    public function all()
     {
-        $questions = Question::all()
-            ->load('answers');
+        $questions = Question::withCount('answers')
+            ->get();
 
         return $questions->toJson();
+    }
+
+    public function new(Request $request)
+    {
+        $validated = $request->validate([
+            'description' => 'required'
+        ]);
+
+        $question = Question::create([
+            'description' => $validated['description']
+        ]);
+
+        return response()->json('Question Created');
+    }
+
+    public function show($id)
+    {
+        $question = Question::with(['answers'])
+            ->find($id);
     }
 }
