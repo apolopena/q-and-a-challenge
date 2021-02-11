@@ -1,0 +1,20 @@
+
+
+h5 {
+  color: darkblue;
+}
+
+.card .card-header {
+  color: white;
+  background-color:rgb(108, 178, 235);
+  font-size: 1.8em
+}
+
+.card {
+  border-top: none;
+  border-color: lightblue;
+}
+
+.pink-text {
+  color: lightpink;
+}
