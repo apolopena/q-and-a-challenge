@@ -1,7 +1,5 @@
-
-
 h5 {
-  color: darkblue;
+  color: rgb(4, 4, 71);
 }
 
 .card .card-header {
@@ -13,8 +11,4 @@ h5 {
 .card {
   border-top: none;
   border-color: lightblue;
-}
-
-.pink-text {
-  color: lightpink;
 }
