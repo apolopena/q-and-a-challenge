@@ -6,17 +6,19 @@ import { Form } from '../index'
 
 export default function QuestionForm() {
   const MIN = 5
-  let payload
   const [question, setQuestion] = useState('')
   const [error, setError] = useState('')
+
   const handleSubmit = e => {
     e.preventDefault()
-
+    if (question == null || question.trim() === '') {
+      setError('The question field is required.')
+      return
+    }
     if (question.length < MIN) {
       setError(`The question must be at least ${MIN} characters.`)
       return
     }
-
     post({ description: question })
   }
 
