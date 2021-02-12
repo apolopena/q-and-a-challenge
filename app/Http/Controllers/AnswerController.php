@@ -10,7 +10,8 @@ class AnswerController extends Controller
     public function new(Request $request)
     {
         $validated = $request->validate([
-            'description' => 'required'
+            'description' => 'required',
+            'question_id' => 'required',
         ]);
 
         $answer = Answer::create([
@@ -18,6 +19,6 @@ class AnswerController extends Controller
             'question_id' => $request->question_id,
         ]);
 
-        return response()->json('Answer created for Question ' . $request->question_id);
+        return response()->json(['id' => $answer->id]);
     }
 }

@@ -25,7 +25,11 @@ export default function QuestionForm() {
   // it works.
   const post = (data) => {
     axios.post('/api/questions', data)
-      .then(res => console.log(`response: ${JSON.stringify(res)}`))
+      .then(res => {
+        console.log(`response: ${JSON.stringify(res, null, 2)}`)
+        console.log(`STATUS: ${res.status}`)
+        console.log(`question_id: ${res.data.id}`)
+      })
       .catch(err => setError(err))
   }
 

@@ -23,4 +23,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('questions', [QuestionController::class, 'all']);
 Route::post('questions', [QuestionController::class, 'new']);
 Route::get('questions/{id}', [QuestionController::class, 'show']);
-Route::post('answers/add', [AnswerController::class, 'new']);
+Route::post('answers', [AnswerController::class, 'new']);

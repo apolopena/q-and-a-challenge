@@ -17,5 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 */
-
-Route::view('/{path?}', 'app');
+// Allows for react-router nested routes by accepting slashes
+Route::get('/{path?}', function () {
+    return view('app');
+})->where('path', '.*');
