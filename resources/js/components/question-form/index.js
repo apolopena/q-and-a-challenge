@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import { useHistory } from 'react-router-dom'
 
 import './styles.css'
 import { Form } from '../index'
 
 export default function QuestionForm() {
   const MIN = 5
+  const history = useHistory()
   const [question, setQuestion] = useState('')
   const [error, setError] = useState('')
 
@@ -19,6 +21,10 @@ export default function QuestionForm() {
       setError(`The question must be at least ${MIN} characters.`)
       return
     }
+    if (question[question.length - 1] !== '?') {
+      setError('A question must end with a question mark.')
+      return
+    }
     post({ description: question })
   }
 
@@ -29,6 +35,7 @@ export default function QuestionForm() {
         console.log(`response: ${JSON.stringify(res, null, 2)}`)
         console.log(`STATUS: ${res.status}`)
         console.log(`question_id: ${res.data.id}`)
+        history.push(`/answers/${res.data.id}`)
       })
       .catch(err => setError(err))
   }
