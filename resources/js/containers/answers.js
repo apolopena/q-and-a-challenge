@@ -19,7 +19,7 @@ export function AnswersContainer({ questions }) {
               </div>
               {
                 (payload.data.answers && payload.data.answers.length > 0)
-                  ? <AnswerList payload={payload} />
+                  ? <AnswerList answers={payload.data.answers} />
                   : <div className='text-center h6 p-2 mt-2'>
                     No answers yet! Be the first to answer by using the form below.
                     <hr className='mb-0' />

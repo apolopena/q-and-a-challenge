@@ -26,7 +26,7 @@ export default function AnswersForm({ questionId }) {
   // it works.
   const post = (data) => {
     axios.post('/api/answers', data)
-      .then(res => console.log(`response: ${JSON.stringify(res)}`))
+      .then(res => console.log(`response.data: ${JSON.stringify(res.data)}`))
       .catch(err => setError(err))
   }
 
