@@ -1,13 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import axios from 'axios'
 
 import './styles.css'
+
+import AnswerContext from '../../context/AnswerContext'
 import { Form } from '../index'
 
 export default function AnswersForm({ questionId }) {
   const MIN = 5
   const [answer, setAnswer] = useState('')
   const [error, setError] = useState('')
+  const { setAnswers } = useContext(AnswerContext)
 
   const handleSubmit = e => {
     e.preventDefault()
@@ -20,13 +23,15 @@ export default function AnswersForm({ questionId }) {
       return
     }
     post({ description: answer, question_id: questionId })
-    location.reload()
   }
 
   // it works.
   const post = (data) => {
     axios.post('/api/answers', data)
-      .then(res => console.log(`response.data: ${JSON.stringify(res.data)}`))
+      .then(res => {
+        setAnswer('')
+        setAnswers(res.data)
+      })
       .catch(err => setError(err))
   }
 

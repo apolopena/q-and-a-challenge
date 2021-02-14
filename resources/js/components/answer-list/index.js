@@ -6,8 +6,8 @@ import { AnswerListItem } from '../index'
 const AnswerList = ({ answers, isLoading }) => (
   <div className='card'>
     <div className='card-body'>
-      { // TODO: figure out why I have to make this null check
-        answers && answers.map(item => (
+      {
+        answers.map(item => (
           <React.Fragment key={item.id}>
             <AnswerListItem item={item} />
             <hr />
@@ -18,4 +18,5 @@ const AnswerList = ({ answers, isLoading }) => (
     </div>
   </div>
 )
+
 export default AnswerList
