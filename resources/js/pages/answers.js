@@ -9,10 +9,9 @@ export default function Answers({ match }) {
   return (
     <>
       <Route exact path={url}>You should not be here ;)</Route>
-      <Route
-        path={`${path}/:questionId`}
-        component={AnswersContainer}
-      />
+      <Route path={`${path}/:questionId`}>
+        <AnswersContainer />
+      </Route>
     </>
   )
 }

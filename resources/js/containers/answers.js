@@ -1,26 +1,22 @@
-import React, { useState, useEffect } from 'react'
+import React, { memo, useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
 import AnswerContext from '../context/AnswerContext'
 import { Header, AnswerForm, AnswerList } from '../components'
 import { useDataApi } from '../hooks'
 
-let cnt = 0;
-export function AnswersContainer({ questions }) {
+export function AnswersContainer() {
   const { questionId } = useParams()
   const [payload] = useDataApi(`/api/questions/${questionId}`)
-  const [answers, setAnswers] = useState(null)
-  let init = false
-  ++cnt
-  useEffect(() => {
-    console.log(`${cnt} the value of payload is ${JSON.stringify(payload, null, 2)}`)
-    !answers && setAnswers(payload.data.answers)
-  }, [payload])
+  const [answers, setAnswers] = useState()
+  console.count('render count')
+
 
   useEffect(() => {
-    console.log(`${cnt} the value of answers is ${JSON.stringify(answers, null, 2)}`)
-
-  }, [answers])
+    console.log(`the value of answers is ${JSON.stringify(answers, null, 2)}`)
+    console.log(`the value of payload is ${JSON.stringify(payload, null, 2)}`)
+    answers === undefined && setAnswers(payload.data.answers)
+  }, [payload, answers])
 
   return (
     <>
@@ -30,7 +26,7 @@ export function AnswersContainer({ questions }) {
           <div className='col-md-6'>
             <div className='card' style={{ border: 'none' }}>
               <div className='card-header'>
-                {payload.data.description}
+                {payload.isLoading ? 'LOADING ANSWERS...' : payload.data.description}
               </div>
               {
                 (answers && answers.length > 0)

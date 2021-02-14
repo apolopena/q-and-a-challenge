@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const useDataApi = url => {
-  const [dataState, setDataState] = useState({ data: [], isLoading: false });
+  const [dataState, setDataState] = useState({ data: [], isLoading: true });
   const [endpointUrl] = useState(url);
 
   useEffect(() => {
     const fetchDataFromApi = async () => {
       try {
-        setDataState({ ...dataState, isLoading: true });
+        //setDataState({ ...dataState, isLoading: true });
         const response = await axios.get(endpointUrl);
         setDataState({
           ...dataState,
