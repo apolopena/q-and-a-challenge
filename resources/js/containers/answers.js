@@ -9,14 +9,33 @@ export function AnswersContainer() {
   const { questionId } = useParams()
   const [payload] = useDataApi(`/api/questions/${questionId}`)
   const [answers, setAnswers] = useState()
+
+  /*
+  // for debugging
   console.count('render count')
-
-
   useEffect(() => {
     console.log(`the value of answers is ${JSON.stringify(answers, null, 2)}`)
     console.log(`the value of payload is ${JSON.stringify(payload, null, 2)}`)
-    answers === undefined && setAnswers(payload.data.answers)
   }, [payload, answers])
+  */
+
+  const displayAnswers = (data) => {
+    if (!data) return
+
+    const NoAnswers = () => (
+      <div className='cardBody py-4'>
+        No answers yet! Be the first to answer by using the form below.
+      </div>
+    )
+    if (answers) {
+      return (answers.length > 0)
+        ? <AnswerList answers={answers} />
+        : NoAnswers()
+    }
+    return (payload.data.answers.length > 0)
+      ? <AnswerList answers={payload.data.answers} />
+      : NoAnswers()
+  }
 
   return (
     <>
@@ -26,16 +45,9 @@ export function AnswersContainer() {
           <div className='col-md-6'>
             <div className='card' style={{ border: 'none' }}>
               <div className='card-header'>
-                {payload.isLoading ? 'LOADING ANSWERS...' : payload.data.description}
+                {payload.isLoading ? '' : payload.data.description}
               </div>
-              {
-                (answers && answers.length > 0)
-                  ? <AnswerList answers={answers} />
-                  : <div className='text-center h6 p-2 mt-2'>
-                    No answers yet! Be the first to answer by using the form below.
-                    <hr className='mb-0' />
-                  </div>
-              }
+              {displayAnswers(payload.data.answers)}
             </div>
             <AnswerContext.Provider value={{ answers, setAnswers }}>
               <AnswerForm questionId={questionId} />
