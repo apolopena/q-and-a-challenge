@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\AnswerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +19,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('questions', [QuestionController::class, 'all']);
+Route::post('questions', [QuestionController::class, 'new']);
+Route::get('questions/{id}', [QuestionController::class, 'show']);
+Route::post('answers', [AnswerController::class, 'new']);
