@@ -27,19 +27,19 @@ gp await-port 3306 &&
 stop_spinner $?
 
 # Bootstrap scaffolding
-if [ ! -d "$GITPOD_REPO_ROOT/bootstrap" ]; then
-  msg="\nMoving Laravel project from ~/temp-app to $GITPOD_REPO_ROOT"
+if [ ! -d "$GITPOD_REPO_ROOT/vendor" ]; then
+  msg="\nMoving Laravel project from ~/temp-app to $GITPOD_REPO_ROOT using rsync"
   # TODO: replace spinner with a real progress bar for coreutils
   log_silent "$msg" && start_spinner "$msg"
   shopt -s dotglob
-  mv --no-clobber ~/test-app/* $GITPOD_REPO_ROOT
+  rsync -rlptgoD --ignore-existing ~/test-app/ $GITPOD_REPO_ROOT
   err_code=$?
   if [ $err_code != 0 ]; then
     stop_spinner $err_code
-    log "ERROR: Failed to move Laravel project from ~/temp-app to $GITPOD_REPO_ROOT" -e
+    log "ERROR: Failed to move Laravel project from ~/temp-app to $GITPOD_REPO_ROOT using rsync" -e
   else
     stop_spinner $err_code
-    log "SUCCESS: moved Laravel project from ~/temp-app to $GITPOD_REPO_ROOT"
+    log "SUCCESS: moved Laravel project from ~/temp-app to $GITPOD_REPO_ROOT using rsync"
   fi
 
   # BEGIN: parse configurations
