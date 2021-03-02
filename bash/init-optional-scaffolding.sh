@@ -31,15 +31,21 @@ install_bootstrap=$(eval $parse bootstrap install)
 # BEGIN: Install Laravel ui if needed
 if [[ $install_react == 1 || $install_bootstrap  == 1 ]]; then
   log "Optional installations that require laravel/ui scaffolding were found"
-  log "Installing laravel/ui scaffolding"
-  composer require laravel/ui:^3.2.0
-  err_code=$?
-  if [ $err_code == 0 ]; then
-    log "SUCCESS: laravel/ui scaffolding installed"
-    log "Compiling fresh scaffolding and running Laravel Mix"
-    yarn install && yarn run dev
+  # Assume we are using composer 2, check if the laravel/ui package has already been installed
+  composer show | grep laravel/ui >/dev/null && __ui=1 || __ui=0
+  if [ $__ui == 1 ]; then
+    log "However is appears that laravel/ui has already been installed, skipping this installation."
   else
-    log "ERROR $err_code: There was a problem installing laravel/ui" -e
+    log "Installing laravel/ui scaffolding"
+    composer require laravel/ui:^3.2.0
+    err_code=$?
+    if [ $err_code == 0 ]; then
+      log "SUCCESS: laravel/ui scaffolding installed"
+      log "Compiling fresh scaffolding and running Laravel Mix"
+      yarn install && yarn run dev
+    else
+      log "ERROR $err_code: There was a problem installing laravel/ui" -e
+    fi
   fi
 fi
 # END: Install Laravel ui if needed
@@ -48,29 +54,34 @@ fi
 if [ "$install_react" == 1 ]; then
   version=$(eval $parse react version)
   auth=$(eval $parse react auth)
+  __installed= bash bash/utils.sh node_package_exists react
   [ -z "$version" ] && version_msg='' || version_msg=" version $version"
   [ "$auth" != 1 ] && auth_msg='' || auth_msg=' with --auth'
   log "React/React DOM install directive found in starter.ini"
-  log "Installing React and React DOM"
-  if [ "$auth" == 1 ]; then
-    php artisan ui react --auth
+  if [ __installed == 1]; then
+  log "However it appears that react has already been installed, skipping this installation."
   else
-    php artisan ui react
-  fi
-  err_code=$?
-  if [ $err_code == 0 ]; then
-    log "SUCCESS: React and React DOM$version_msg$auth_msg has been installed"
-    log "Compiling fresh scaffolding and running Laravel Mix"
-    yarn install && yarn run dev && sleep 1 && yarn run dev
-    if [ ! -z "$version" ]; then
-      log "Setting react and react-dom to$version_msg"
-      # TODO:  validate semver and valid version for the package so users cant pass in junk
-      yarn upgrade react@$version react-dom@$version
+    log "Installing React and React DOM"
+    if [ "$auth" == 1 ]; then
+      php artisan ui react --auth
+    else
+      php artisan ui react
     fi
-    [ "$install_bootstrap" == 1 ] && log "Bootstrap install directive found but ignored. Already installed"
-    [ "$install_vue" == 1 ] && log "Vue install directive found but ignored. The install of react superceded this"
-  else
-    log "ERROR $err_code: There was a problem installing React/React DOM$version_msg$auth_msg" -e
+    err_code=$?
+    if [ $err_code == 0 ]; then
+      log "SUCCESS: React and React DOM$version_msg$auth_msg has been installed"
+      log "Compiling fresh scaffolding and running Laravel Mix"
+      yarn install && yarn run dev && sleep 1 && yarn run dev
+      if [ ! -z "$version" ]; then
+        log "Setting react and react-dom to$version_msg"
+        # TODO:  validate semver and valid version for the package so users cant pass in junk
+        yarn upgrade react@$version react-dom@$version
+      fi
+      [ "$install_bootstrap" == 1 ] && log "Bootstrap install directive found but ignored. Already installed"
+      [ "$install_vue" == 1 ] && log "Vue install directive found but ignored. The install of react superceded this"
+    else
+      log "ERROR $err_code: There was a problem installing React/React DOM$version_msg$auth_msg" -e
+    fi
   fi
 fi
 # END: Optional react and react-dom install

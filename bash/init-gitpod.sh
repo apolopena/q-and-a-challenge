@@ -26,7 +26,9 @@ start_spinner "Initializing MySql..." &&
 gp await-port 3306 &&
 stop_spinner $?
 
-# Bootstrap scaffolding
+# BEGIN: Bootstrap Laravel scaffolding
+
+# Move Laravel project files if they are not already in version control
 if [ ! -d "$GITPOD_REPO_ROOT/vendor" ]; then
   msg="\nMoving Laravel project from ~/temp-app to $GITPOD_REPO_ROOT using rsync"
   # TODO: replace spinner with a real progress bar for coreutils
@@ -64,6 +66,18 @@ if [ ! -d "$GITPOD_REPO_ROOT/vendor" ]; then
   [ -e .env ] && url=$(gp url 8000); sed -i'' "s#^APP_URL=http://localhost*#APP_URL=$url\nASSET_URL=$url#g" .env
   # END: parse configurations
 
+  # Install node packages if needed, in case the Laravel Ui front end is already in version control
+  if [[ -f "package.json"  && ! -d "node_modules" ]]; then
+    log "Found a package.json but there are no node modules installed"
+    log " --> Assume that there is Laravel ui frontend scaffolding already installed"
+    log " --> Installing node packages..."
+    yarn install
+    log " --> Node packages installed"
+    log " --> Running Laravel Mix..."
+    yarn run dev
+    log " --> Running Laravel Mix complete"
+  fi
+
   # BEGIN: Optional configurations
   # Super user account for phpmyadmin
   installed_phpmyadmin=$(. bash/utils.sh parse_ini_value starter.ini phpmyadmin install)
@@ -90,11 +104,12 @@ if [ ! -d "$GITPOD_REPO_ROOT/vendor" ]; then
   fi
   # END: Optional configurations
 
-  # Move and or merge necessary failes then cleanup
+  # Move and merge necessary files, then cleanup
   (echo; cat ~/test-app/.gitignore) >> $GITPOD_REPO_ROOT/.gitignore && rm ~/test-app/.gitignore
   mv ~/test-app/README.md $GITPOD_REPO_ROOT/README_LARAVEL.md
   rmdir ~/test-app
 fi
+# END: Bootstrap Laravel scaffolding
 
 # Messages for github_changelog_generator
 [ "$installed_changelog_gen" == 1 ] &&
