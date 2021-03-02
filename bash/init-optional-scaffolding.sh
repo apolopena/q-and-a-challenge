@@ -31,9 +31,10 @@ install_bootstrap=$(eval $parse bootstrap install)
 # BEGIN: Install Laravel ui if needed
 if [[ $install_react == 1 || $install_bootstrap  == 1 ]]; then
   log "Optional installations that require laravel/ui scaffolding were found"
+
   # Assume we are using composer 2, check if the laravel/ui package has already been installed
   composer show | grep laravel/ui >/dev/null && __ui=1 || __ui=0
-  log "is_laravel-ui_already_installed=$__ui"
+
   if [ "$__ui" == 1 ]; then
     log "However is appears that laravel/ui has already been installed, skipping this installation."
   else
@@ -56,12 +57,11 @@ if [ "$install_react" == 1 ]; then
   version=$(eval $parse react version)
   auth=$(eval $parse react auth)
   __installed=$(bash bash/utils.sh node_package_exists react)
-  log "is_react_already_installed=$__installed"
   [ -z "$version" ] && version_msg='' || version_msg=" version $version"
   [ "$auth" != 1 ] && auth_msg='' || auth_msg=' with --auth'
   log "React/React DOM install directive found in starter.ini"
   if [ "$__installed" == 1 ]; then
-    log "However it appears that react has already been installed, skipping this installation."
+    log "However it appears that React/React DOM has already been installed, skipping this installation."
   else
     log "Installing React and React DOM"
     if [ "$auth" == 1 ]; then
@@ -71,7 +71,7 @@ if [ "$install_react" == 1 ]; then
     fi
     err_code=$?
     if [ $err_code == 0 ]; then
-      log "SUCCESS: React and React DOM$version_msg$auth_msg has been installed"
+      log "SUCCESS: React and React DOM$version_msg$auth_msg have been installed"
       log "Compiling fresh scaffolding and running Laravel Mix"
       yarn install && yarn run dev && sleep 1 && yarn run dev
       if [ ! -z "$version" ]; then
@@ -92,31 +92,40 @@ fi
 if [[ "$install_vue" == 1 && "$install_react" == 0 ]]; then
   version=$(eval $parse vue version)
   auth=$(eval $parse vue auth)
+  __installed=$(bash bash/utils.sh node_package_exists vue)
   [ -z "$version" ] && version_msg='' || version_msg=" version $version"
   [ "$auth" != 1 ] && auth_msg='' || auth_msg=' with --auth'
   log "Vue install directive found in starter.ini"
-  log "Installing Vue..."
-  if [ "$auth" == 1 ]; then
-    php artisan ui vue --auth
+  if [ "$__installed" == 1 ]; then
+    log "However it appears that Vue has already been installed, skipping this installation."
   else
-    php artisan ui vue
-  fi
-  err_code=$?
-  if [ $err_code == 0 ]; then
-    log "SUCCESS: Vue$version_msg$auth_msg has been installed"
-    log "Compiling fresh scaffolding and running Laravel Mix"
-    yarn install && yarn run dev && sleep 1 && yarn run dev
-    if [ ! -z "$version" ]; then
-      log "Setting vue to$version_msg"
-      # TODO:  validate semver and valid version for the package so users cant pass in junk
-      yarn upgrade vue@$version
+    log "Installing Vue..."
+    if [ "$auth" == 1 ]; then
+      php artisan ui vue --auth
+    else
+      php artisan ui vue
     fi
-    [ "$install_bootstrap" == 1 ] && log "Bootstrap install directive found but ignored. Already installed."
-  else
-    log "ERROR $err_code: There was a problem installing Vue$version_msg$auth_msg" -e
+    err_code=$?
+    if [ $err_code == 0 ]; then
+      log "SUCCESS: Vue$version_msg$auth_msg has been installed"
+      log "Compiling fresh scaffolding and running Laravel Mix"
+      yarn install && yarn run dev && sleep 1 && yarn run dev
+      if [ ! -z "$version" ]; then
+        log "Setting vue to$version_msg"
+        # TODO:  validate semver and valid version for the package so users cant pass in junk
+        yarn upgrade vue@$version
+      fi
+      [ "$install_bootstrap" == 1 ] && log "Bootstrap install directive found but ignored. Already installed."
+    else
+      log "ERROR $err_code: There was a problem installing Vue$version_msg$auth_msg" -e
+    fi
   fi
 fi
 # END: Optional vue install
+
+# TODO: test bootstrap install without any detection for an existing install.
+# If nothing is affected like app.js then install wont need to be skipped.
+# otherwise implement the same fix for existing installs that we have for react and vue.
 
 # BEGIN: Optional bootstrap install
 if [[ $install_bootstrap == 1 && $install_react == 0 && $install_vue == 0 ]]; then
