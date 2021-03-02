@@ -97,10 +97,11 @@ if [ ! -d "$GITPOD_REPO_ROOT/vendor" ]; then
       log "phpmyadmin node modules have not yet been installed, installing now..."
       cd public/phpmyadmin && yarn install && cd ../../
       if [ $? == 0 ]; then
+        __pmaurl=$(gp url 8001)/phpmyadmin
         log "phpmyadmin node modules installed."
         log "To login to phpmyadmin:"
         log "  --> 1. Make sure you are serving it with apache"
-        log "  --> 2. In the browser go to $GITPOD_WORKSPACE_URL/phpmyadmin"
+        log "  --> 2. In the browser go to $__pmaurl"
         log "  --> 3. You should be able to login here using the default account. user: pmasu, pw: 123456"
       else
         log "ERROR: installing phpmyadmin node modules. Try installing them manually." -e
