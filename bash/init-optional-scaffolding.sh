@@ -55,7 +55,7 @@ fi
 if [ "$install_react" == 1 ]; then
   version=$(eval $parse react version)
   auth=$(eval $parse react auth)
-  __installed= bash bash/utils.sh node_package_exists react
+  __installed=bash bash/utils.sh node_package_exists react
   log "is_react_already_installed=$__installed"
   [ -z "$version" ] && version_msg='' || version_msg=" version $version"
   [ "$auth" != 1 ] && auth_msg='' || auth_msg=' with --auth'
