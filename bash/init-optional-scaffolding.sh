@@ -33,7 +33,8 @@ if [[ $install_react == 1 || $install_bootstrap  == 1 ]]; then
   log "Optional installations that require laravel/ui scaffolding were found"
   # Assume we are using composer 2, check if the laravel/ui package has already been installed
   composer show | grep laravel/ui >/dev/null && __ui=1 || __ui=0
-  if [ $__ui == 1 ]; then
+  log "is_laravel-ui_already_installed=$__ui"
+  if [ "$__ui" == 1 ]; then
     log "However is appears that laravel/ui has already been installed, skipping this installation."
   else
     log "Installing laravel/ui scaffolding"
@@ -55,11 +56,12 @@ if [ "$install_react" == 1 ]; then
   version=$(eval $parse react version)
   auth=$(eval $parse react auth)
   __installed= bash bash/utils.sh node_package_exists react
+  log "is_react_already_installed=$__installed"
   [ -z "$version" ] && version_msg='' || version_msg=" version $version"
   [ "$auth" != 1 ] && auth_msg='' || auth_msg=' with --auth'
   log "React/React DOM install directive found in starter.ini"
-  if [ __installed == 1 ]; then
-  log "However it appears that react has already been installed, skipping this installation."
+  if [ "$__installed" == 1 ]; then
+    log "However it appears that react has already been installed, skipping this installation."
   else
     log "Installing React and React DOM"
     if [ "$auth" == 1 ]; then
