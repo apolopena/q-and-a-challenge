@@ -36,6 +36,15 @@ else
     else
       >&2 echo "  ERROR $?: phpmyadmin failed to install" | tee -a $LOG
     fi
+    if [ ! -d 'node_modules' ]; then
+      echo "Node modules have not yet been installed for phpmyadmin, installing now..." | tee -a $LOG
+      yarn install
+      echo "Node modules installed for phpmyadmin. Ready to go!" | tee -a $LOG
+      echo "To login to phpmyadmin" | tee -a $LOG
+      echo "  --> 1. Make sure you are serving it with apache"
+      echo '  --> 2. In the browser go to GITPOD_WORKSPACE_URL/phpmyadmin'
+      echo '  --> 3. You should be able to login here using the default account. user: pmasu, pw: 123456'
+    fi
   fi
 fi
 echo "END: Scaffolding Laravel Project" | tee -a $LOG

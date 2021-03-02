@@ -36,7 +36,7 @@ if [[ $install_react == 1 || $install_bootstrap  == 1 ]]; then
   composer show | grep laravel/ui >/dev/null && __ui=1 || __ui=0
 
   if [ "$__ui" == 1 ]; then
-    log "However is appears that laravel/ui has already been installed, skipping this installation."
+    log "However it appears that laravel/ui has already been installed, skipping this installation."
   else
     log "Installing laravel/ui scaffolding"
     composer require laravel/ui:^3.2.0
