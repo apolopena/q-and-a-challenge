@@ -79,7 +79,7 @@ if [ ! -d "$GITPOD_REPO_ROOT/vendor" ]; then
       log "ERROR: Failed to move createe mysql database: laravel" -e
     else
       stop_spinner $err_code
-      log: "SUCCESS: created mysql database: laravel"
+      log "SUCCESS: created mysql database: laravel"
     fi
   fi
   # Install node packages if needed, in case the Laravel Ui front end is already in version control
