@@ -94,16 +94,16 @@ if [ ! -d "$GITPOD_REPO_ROOT/vendor" ]; then
       stop_spinner $err_code
     fi
     if [ ! -d 'public/phpmyadmin/node_modules' ]; then
-      echo "phpmyadmin node modules have not yet been installed, installing now..." | tee -a $LOG
+      log "phpmyadmin node modules have not yet been installed, installing now..."
       cd public/phpmyadmin && yarn install && cd ../../
       if [ $? == 0 ]; then
-        echo "phpmyadmin node modules installed." | tee -a $LOG
-        echo "To login to phpmyadmin" | tee -a $LOG
-        echo "  --> 1. Make sure you are serving it with apache" | tee -a $LOG
-        echo "  --> 2. In the browser go to $GITPOD_WORKSPACE_URL/phpmyadmin" | tee -a $LOG
-        echo "  --> 3. You should be able to login here using the default account. user: pmasu, pw: 123456" | tee -a $LOG
+        log "phpmyadmin node modules installed."
+        log "To login to phpmyadmin:"
+        log "  --> 1. Make sure you are serving it with apache"
+        log "  --> 2. In the browser go to $GITPOD_WORKSPACE_URL/phpmyadmin"
+        log "  --> 3. You should be able to login here using the default account. user: pmasu, pw: 123456"
       else
-        echo "ERROR:  installing phpmyadmin node modules. Try installing them manually."
+        log "ERROR: installing phpmyadmin node modules. Try installing them manually." -e
       fi
     fi
   fi
