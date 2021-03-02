@@ -102,6 +102,9 @@ if [ ! -d "$GITPOD_REPO_ROOT/vendor" ]; then
         echo "  --> 1. Make sure you are serving it with apache" | tee -a $LOG
         echo "  --> 2. In the browser go to $GITPOD_WORKSPACE_URL/phpmyadmin" | tee -a $LOG
         echo "  --> 3. You should be able to login here using the default account. user: pmasu, pw: 123456" | tee -a $LOG
+      else
+        echo "ERROR:  installing phpmyadmin node modules. Try installing them manually."
+      fi
     fi
   fi
   # Install https://github.com/github-changelog-generator/github-changelog-generator
