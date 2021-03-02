@@ -95,12 +95,13 @@ if [ ! -d "$GITPOD_REPO_ROOT/vendor" ]; then
     fi
     if [ ! -d 'public/phpmyadmin/node_modules' ]; then
       echo "phpmyadmin node modules have not yet been installed, installing now..." | tee -a $LOG
-      yarn install
-      echo "phpmyadmin node modules installed." | tee -a $LOG
-      echo "To login to phpmyadmin" | tee -a $LOG
-      echo "  --> 1. Make sure you are serving it with apache"
-      echo "  --> 2. In the browser go to $GITPOD_WORKSPACE_URL/phpmyadmin"
-      echo '  --> 3. You should be able to login here using the default account. user: pmasu, pw: 123456'
+      cd public/phpmyadmin && yarn install && cd ../../
+      if [ $? == 0 ]; then
+        echo "phpmyadmin node modules installed." | tee -a $LOG
+        echo "To login to phpmyadmin" | tee -a $LOG
+        echo "  --> 1. Make sure you are serving it with apache" | tee -a $LOG
+        echo "  --> 2. In the browser go to $GITPOD_WORKSPACE_URL/phpmyadmin" | tee -a $LOG
+        echo "  --> 3. You should be able to login here using the default account. user: pmasu, pw: 123456" | tee -a $LOG
     fi
   fi
   # Install https://github.com/github-changelog-generator/github-changelog-generator
