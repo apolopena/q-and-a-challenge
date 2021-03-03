@@ -135,9 +135,9 @@ if [ ! -d "$GITPOD_REPO_ROOT/vendor" ]; then
   # END: Optional configurations
 
   # Move and merge necessary files, then cleanup
-  (echo; cat ~/test-app/.gitignore) >> $GITPOD_REPO_ROOT/.gitignore && rm ~/test-app/.gitignore
+  #(echo; cat ~/test-app/.gitignore) >> $GITPOD_REPO_ROOT/.gitignore && rm ~/test-app/.gitignore
   mv ~/test-app/README.md $GITPOD_REPO_ROOT/README_LARAVEL.md
-  rmdir ~/test-app
+  rm -rf ~/test-app
 fi
 # END: Bootstrap Laravel scaffolding
 
