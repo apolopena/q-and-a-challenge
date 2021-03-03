@@ -38,7 +38,7 @@ tasks:
     name: Web Server
   - openMode: split-top
     command: |
-      gp await-sync inited && default_server=$(bash bash/utils.sh parse_ini_value starter.ini development default_server); open_preview $default_server
+      gp sync-await inited && default_server=$(bash bash/utils.sh parse_ini_value starter.ini development default_server); open_preview $default_server
     name: Main Terminal
 
 vscode:
