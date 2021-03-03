@@ -10,7 +10,7 @@ export function QuestionsContainer({ questions }) {
       <Header />
       <div className='container py-4'>
         <div className='row justify-content-center'>
-          <div className='col-md-6'>
+          <div className='col-xs-12 col-md-8 col-xl-6'>
             <QuestionForm />
             <p />
             <QuestionList
