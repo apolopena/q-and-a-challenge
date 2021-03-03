@@ -11,4 +11,4 @@ bash bash/helpers.sh persist_file /var/log/workspace-init.log
 
 # Keep this code in sequence and at the bottom of this file
 bash bash/helpers.sh mark_as_inited
-gp sync-done inited
+gp sync-done gitpod-inited
