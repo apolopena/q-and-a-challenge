@@ -6,6 +6,8 @@
 
 **Merged pull requests:**
 
+- Development gitpod rsync, gitpod timing, gitpod conditional scaffolding, and QnA project fixes [\#3](https://github.com/apolopena/q-and-a-challenge/pull/3) ([apolopena](https://github.com/apolopena))
+- Ready for Inital release [\#2](https://github.com/apolopena/q-and-a-challenge/pull/2) ([apolopena](https://github.com/apolopena))
 - Initial project scaffolding [\#1](https://github.com/apolopena/q-and-a-challenge/pull/1) ([apolopena](https://github.com/apolopena))
 
 
