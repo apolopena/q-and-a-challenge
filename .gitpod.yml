@@ -2,49 +2,40 @@ image:
   file: .gitpod.Dockerfile
 
 ports:
-  - port: 8001
-    onOpen: ignore
-  - port: 8000
-    onOpen: ignore
-  - port: 9009
+  - port: 3005
     onOpen: ignore
   - port: 3306
     onOpen: ignore
+  - port: 8000
+    onOpen: ignore
+  - port: 8001
+    onOpen: ignore
+  - port: 8002
+    onOpen: ignore
+  - port: 9000
+    onOpen: ignore
+    visibility: private
+  - port: 9009
+    onOpen: ignore
+    visibility: private
 
 tasks:
-  - before: bash bash/before-tasks.sh
+  - before: bash .gp/bash/before-tasks.sh
     init: |
-      bash bash/init-gitpod.sh &&
-      bash bash/init-optional-scaffolding.sh &&
-      bash bash/init-project.sh &&
-      bash bash/init-complete.sh
-    name: Startup
-  - openMode: split-left
-    command: |
-      if [ $(bash bash/helpers.sh is_inited) == 1 ]; then \
-        gp sync-done gitpod-inited
-      fi;
-      UP=$(pgrep mysql | wc -l); \
-      if [ "$UP" -ne 1 ]; then \
-        . bash/third-party/spinner.sh &&
-        start_spinner "Initializing MySql..." &&
-        gp await-port 3306 &&
-        stop_spinner $?; \
-      fi &&
-      gp await-port 3306 &&
-      sleep 1 &&
-      bash -i bash/helpers.sh start_server
-    name: Web Server
-  - openMode: split-top
-    command: |
-      . bash/third-party/spinner.sh &&
-      start_spinner "Opening preview when system is ready..."
-      gp sync-await gitpod-inited &&
-      default_server=$(bash bash/utils.sh parse_ini_value starter.ini development default_server); \
-      open_preview $default_server &&
-      stop_spinner $?
+      bash .gp/bash/init-gitpod.sh
+      bash .gp/bash/init-optional-scaffolding.sh
+      bash .gp/bash/init-project.sh
+      bash .gp/bash/init-complete.sh
     name: Main Terminal
+  - openMode: split-right
+    command: |
+      bash .gp/bash/start-server.sh
+    name: Web Server
+  - openMode: split-right
+    command: |
+      if bash .gp/bash/open-preview.sh; then exit; else bash .gp/bash/patch-preview.sh; fi
+    name: Extra Terminal
 
 vscode:
   extensions:
-    - felixfbecker.php-debug@1.14.5:xEr6zDqY853IE2HQtLtXPA==
+    - felixfbecker.php-debug
