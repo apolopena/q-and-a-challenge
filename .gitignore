@@ -1,9 +1,7 @@
-# Begin: merged in from laravel8 starter project
 .starter.env
 /vendor/
 /node_modules/
 /public/phpmyadmin
-# END: merged in from laravel8 starter project
 /node_modules
 /public/hot
 /public/storage
@@ -17,7 +15,7 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
-# Additional Laravel Mix
+# Laravel Mix artifacts
 /public/js
 /public/css
 /public/build
