@@ -12,7 +12,6 @@ all_zeros='^[0]+$'
 . .gp/bash/spinner.sh
 
 # remove unused scaffolding
-[[ -f resources/js/app.js ]] && rm resources/js/app.js
 [[ -f resources/js/components/Example.js ]] && rm resources/js/components/Example.js
 [[ -f resources/views/welcome.blade.php ]] && rm resources/views/welcome.blade.php
 
