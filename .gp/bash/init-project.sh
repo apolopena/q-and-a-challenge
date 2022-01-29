@@ -4,21 +4,32 @@
 # Description:
 # Project specific initialization.
 
+all_zeros='^[0]+$'
+
 # Load logger
 . .gp/bash/workspace-init-logger.sh
+# Load spinner
+. .gp/bash/spinner.sh
 
-# BEGIN example code block - migrate database
-# . .gp/bash/spinner.sh # COMMENT: Load spinner
-# __migrate_msg="Migrating database"
-# log_silent "$__migrate_msg" && start_spinner "$__migrate_msg"
-# php artisan migrate
-# err_code=$?
-# if [ $err_code != 0 ]; then
-#  stop_spinner $err_code
-#  log -e "ERROR: Failed to migrate database"
-# else
-#  stop_spinner $err_code
-#  log "SUCCESS: migrated database"
-# fi
-# END example code block - migrate database
+# remove unused scaffolding
+[[ -f resources/js/components/Example.js ]] && rm resources/js/components/Example.js
+[[ -f resources/views/welcome.blade.php ]] && rm resources/views/welcome.blade.php
 
+# Migrate and Seed
+declare -a exit_codes=()
+msg="Migrating and seeding project database"
+log "$msg"
+php artisan migrate
+exit_codes+=($?)
+php artisan db:seed
+exit_codes+=($?)
+if [[ $(echo "${exit_codes[@]}" | tr -d '[:space:]') =~ $all_zeros ]]; then
+  log "SUCCESS: $msg"
+else
+  log -e "ERROR: $msg"
+fi
+
+# Hot reload
+msg="Setting up hot reload system"
+log_silent "$msg"
+if bash -ic "hot-reload setup"; then log_silent "SUCCESS: $msg"; else log_silent -e "ERROR: $msg"; fi
